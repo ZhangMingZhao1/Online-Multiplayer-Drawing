@@ -31,7 +31,7 @@ export default {
       activityMsg: [],
       dialogVisible: true,
       curUser: null,
-      peopleNum: 0
+      peopleNum: 0,
     };
   },
   unmounted() {
@@ -39,6 +39,7 @@ export default {
     this.$data.socket.disconnect();
   },
   mounted() {
+    
     // socket init
     const route = useRoute();
     const roomId = route.params.id;
@@ -151,16 +152,6 @@ export default {
       const socket = this.$data.socket;
       const graphData = this.$data.lf.getGraphData();
       socket.emit('drawing', graphData);
-    },
-    getData() {
-      // 向服务器发送消息
-      socket.emit('drawing', 'drawing');
-
-      // 从服务器接收消息
-      socket.on('drawing', (...args) => {
-        console.log('111111');
-      });
-      console.log(JSON.stringify(this.lf.getGraphData()));
     }
   },
   components: {}
@@ -179,6 +170,8 @@ export default {
 
   <div class="room-content">
     <div class="left-panel">
+      <div>当前房间号：{{roomId}}</div>
+      <div>当前用户：{{curUser}}</div>
       <div>当前在线人数：{{ peopleNum }}</div>
       <el-button @click="leaveRoom" :disabled="curUser===null" type="primary">退出房间</el-button>
       <el-divider />

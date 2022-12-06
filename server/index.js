@@ -14,17 +14,15 @@ app.use(express.static(__dirname + '/public'));
 // 房间用户名单
 const roomInfo = {};
 
+io.on('connection', onConnection);
+
 function onConnection(socket) {
   const url = socket.request.headers['raw-url'];
-  console.log('url', url);
-  console.log('url', url);
   const splited = url.split('/');
   const roomID = splited[splited.length - 1]; // 获取房间ID
-  console.log('roomId', roomID);
   let user = '';
   socket.on('join', function (userName) {
     user = userName;
-
     // 将用户昵称加入房间名单中
     if (!roomInfo[roomID]) {
       roomInfo[roomID] = [];
@@ -57,6 +55,6 @@ function onConnection(socket) {
   });
 }
 
-io.on('connection', onConnection);
+
 
 http.listen(port, () => console.log('listening on port ' + port));
